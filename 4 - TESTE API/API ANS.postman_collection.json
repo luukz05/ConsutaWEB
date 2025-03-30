@@ -1,0 +1,54 @@
+{
+	"info": {
+		"_postman_id": "79af7771-0d5c-4506-a882-289b8ea81883",
+		"name": "API ANS",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "32946418"
+	},
+	"item": [
+		{
+			"name": "REQUISICAO TESTE - RAND()",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "http://127.0.0.1:5000/rand"
+			},
+			"response": []
+		},
+		{
+			"name": "CONSULTA POR NOME - CADOP",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:5000/consulta/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"consulta",
+						""
+					],
+					"query": [
+						{
+							"key": "nome_busca",
+							"value": "onix",
+							"disabled": true
+						},
+						{
+							"key": "nome_busca",
+							"value": "unimed",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
