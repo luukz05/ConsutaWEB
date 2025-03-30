@@ -1,44 +1,34 @@
 import mysql.connector
-from mysql.connector import Error
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 from flask_cors import CORS
+import os
 
+def get_db_connection():
+    return mysql.connector.connect(host='localhost', database='ANS', user='lucas', password='123321') #.env
 
 app = Flask(__name__)
 CORS(app)
 
-@app.route('/rand')
+@app.route('/rand', methods=['GET'])
 def rand():
     try:
-        con = mysql.connector.connect(host='localhost', database='ANS', user='lucas', password='123321')
-
-        if con.is_connected():
-            db_info = con.get_server_info()
-            print(f"Conectado ao servidor MySQL versão {db_info}")
-            cursor = con.cursor()
+        with get_db_connection() as con, con.cursor(dictionary=True) as cursor:
             cursor.execute("SELECT * FROM RELATORIO_CADOP ORDER BY RAND() LIMIT 1;")
-            linhas = cursor.fetchall()
-            print(f"Todas as linhas retornadas: {linhas}")
+            return jsonify(cursor.fetchall() or {"message": "nenhum dado encontrado"})
+    except mysql.connector.Error as e:
+        return jsonify({"error": str(e)}), 500
 
-            if linhas:
-                return jsonify(linhas)
-            else:
-                return jsonify({"message": "Nenhum dado encontrado"}), 404
-
-    except Error as e:
-        print(f"Erro ao acessar o banco de dados: {e}")
-        return jsonify({"error": f"Erro ao acessar o banco de dados: {str(e)}"}), 500
-
-    except Exception as e:
-        print(f"Erro inesperado: {e}")
-        return jsonify({"error": f"Erro inesperado: {str(e)}"}), 500
-
-    finally:
-        if con.is_connected():
-            cursor.close()
-            con.close()
-            print("Conexão ao banco de dados encerrada.")
-
+@app.route('/consulta/', methods=['GET'])
+def consulta():
+    nome_busca = request.args.get('nome_busca')
+    if not nome_busca:
+        return jsonify({"error": "'nome_busca' é obrigatório"}), 400
+    try:
+        with get_db_connection() as con, con.cursor(dictionary=True) as cursor:
+            cursor.execute("SELECT * FROM RELATORIO_CADOP WHERE Nome_Fantasia LIKE CONCAT('%', %s, '%');", (nome_busca,))
+            return jsonify(cursor.fetchall() or {"message": "nenhum dado encontrado"})
+    except mysql.connector.Error as e:
+        return jsonify({"error": str(e)}), 500
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=os.getenv("FLASK_DEBUG", "false").lower() == "true")

@@ -5,12 +5,11 @@
 <template>
   <header>
     <h1 class="titulo">Buscar operadoras ativas na ANS</h1>
-    <Pesquisa/>
-    <h3 class="response"></h3>
+    <Pesquisa />
   </header>
 </template>
 
-<style scoped>
+<style>
   h1 {
     color: #eee;
     font-size: 50pt;

@@ -9,7 +9,7 @@ dados = []
 colunas = None
 
 with pdfplumber.open(caminho_pdf) as pdf:
-    for pagina in pdf.pages[2:181]:  # pg de 2 a 181
+    for pagina in pdf.pages[2:181]:
         tabela = pagina.extract_table()
         if tabela:
             for linha in tabela:
