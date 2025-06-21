@@ -1,4 +1,4 @@
-# 🔍 ConsultaWeb (Estudo) – Sistema de extração e consulta de dados em PDF
+# 🔍 ConsultaWeb – Sistema de extração e consulta de dados em PDF
 
 Projeto de estudo focado em backend Python para web scraping, extração de dados de planilhas em PDF, armazenamento em MySQL e interface frontend em Vue.js para consulta com buscas e filtros.
 
